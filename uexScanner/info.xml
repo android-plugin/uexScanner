@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexScanner" version="4.3.7" build="7">
-        <info>7:修复Activity导出问题，修改为false</info>
+        uexName="uexScanner" version="4.3.8" build="2021050801">
+        <info>8:修复首次授权之后和下次app重启之前，无法使用相机的问题</info>
+        <build>7:修复Activity导出问题，修改为false</build>
         <build>6:修改manifest中的uses-feature配置，防止与uexCamera冲突</build>
         <build>5:添加动态权限申请</build>
         <build>4:修正图片识别接口在主线程进行网络请求的问题</build>

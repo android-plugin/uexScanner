@@ -45,3 +45,10 @@ captures/
 .project
 .cproject
 .settings/
+
+### AppCan Butterfly Plugins Ignore ###
+
+widgetone_androiddebug.keystore
+uex*/dex/*.jar
+uex*/jar/plugin_uex*.jar
+uex*.zip

@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
-import android.os.Bundle;
 import android.os.Environment;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -253,8 +251,21 @@ public class EUExScanner extends EUExBase {
     }
 
     @Override
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
         super.onRequestPermissionResult(requestCode, permissions, grantResults);
+        // 将后续操作放入下一个loop中执行，防止权限授权尚未完成就使用可能造成的意想不到的bug。
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                handleRequestPermissionResult(requestCode, permissions, grantResults);
+            }
+        });
+    }
+
+    /**
+     * 处理权限申请结果
+     */
+    private void handleRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1){
             if (grantResults[0] != PackageManager.PERMISSION_DENIED){
                 if (openParams != null && openParams.length == 1) {
