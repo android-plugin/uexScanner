@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -37,9 +36,7 @@ import org.zywx.wbpalmstar.engine.universalex.EUExBase;
 import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
 import org.zywx.wbpalmstar.plugin.uexzxing.DataJsonVO;
 import org.zywx.wbpalmstar.plugin.uexzxing.ScannerUtils;
-import org.zywx.wbpalmstar.widgetone.dataservice.WWidgetData;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -49,8 +46,6 @@ public class EUExScanner extends EUExBase {
     private static final String BUNDLE_DATA = "data";
     private static final int MSG_SET_JSON_DATA = 1;
     private static final int MSG_OPEN = 2;
-    private WWidgetData widgetData;
-    private String sdPath = "";
     private DataJsonVO dataJson;
 
     public boolean mSupportCamera = false;
@@ -59,18 +54,6 @@ public class EUExScanner extends EUExBase {
 
     public EUExScanner(Context context, EBrowserView view) {
         super(context, view);
-        widgetData = view.getCurrentWidget();
-        boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-        if (sdCardExist) {
-            // 动态获取数据存放目录
-            sdPath = widgetData.getWidgetPath() + "scanner" + File.separator;
-            File file = new File(sdPath);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-        } else {
-            Toast.makeText(mContext, "sd卡不存在，请查看", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -99,7 +82,7 @@ public class EUExScanner extends EUExBase {
         // android6.0以上动态权限申请
         if (mContext.checkCallingOrSelfPermission(Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED){
-            requsetPerssions(Manifest.permission.CAMERA, "请先申请权限"
+            requsetPerssions(Manifest.permission.CAMERA, "二维码扫描功能需要使用权限："
                     + Manifest.permission.CAMERA, 1);
         } else {
             if (params != null && params.length == 1) {
